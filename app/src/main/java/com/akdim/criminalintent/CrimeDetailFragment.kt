@@ -1,6 +1,7 @@
 package com.akdim.criminalintent
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +12,9 @@ import java.util.Date
 import java.util.UUID
 
 class CrimeDetailFragment : Fragment(){
-    private lateinit var crime:Crime
+    //private lateinit var crime:Crime
+    lateinit var crime:Crime
+
     //private lateinit var binding: FragmentCrimeDetailBinding
     private var _binding: FragmentCrimeDetailBinding? = null
     private val binding

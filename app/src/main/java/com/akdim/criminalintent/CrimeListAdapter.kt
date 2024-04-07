@@ -35,7 +35,8 @@ class PoliceCrimeHolder(
 ) : RecyclerView.ViewHolder(binding.root) {
     fun bind(crime: Crime) {
         binding.crimePoliceTitle.text = crime.title
-        binding.crimePoliceDate.text = crime.date.toString()
+        //binding.crimePoliceDate.text = crime.date.toString()
+        binding.crimePoliceDate.text = DateFormat.format("MMMM dd, yyyy", crime.date).toString()      // Convert timestamp to conventional date
 
         binding.root.setOnClickListener {
             Toast.makeText(

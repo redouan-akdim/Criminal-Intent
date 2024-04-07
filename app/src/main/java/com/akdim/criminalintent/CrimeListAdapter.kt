@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.akdim.criminalintent.databinding.ListItemCrimeBinding
+import com.akdim.criminalintent.databinding.ListItemPoliceCrimeBinding
 
 class CrimeHolder(
     private val binding: ListItemCrimeBinding
@@ -23,25 +24,62 @@ class CrimeHolder(
     }
 }
 
+// Second viewHolder
+class PoliceCrimeHolder(
+    private val binding: ListItemPoliceCrimeBinding
+) : RecyclerView.ViewHolder(binding.root) {
+    fun bind(crime: Crime) {
+        binding.crimePoliceTitle.text = crime.title
+        binding.crimePoliceDate.text = crime.date.toString()
+
+        binding.root.setOnClickListener {
+            Toast.makeText(
+                binding.root.context,
+                "${crime.title} clicked!",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+}
+
 class CrimeListAdapter(
     private val crimes: List<Crime>
-) : RecyclerView.Adapter<CrimeHolder>() {
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ) : CrimeHolder {
-        val inflater = LayoutInflater.from(parent.context)
-        val binding = ListItemCrimeBinding.inflate(inflater, parent, false)
-        return CrimeHolder(binding)
+    ) : RecyclerView.ViewHolder {
+
+        if (viewType == 0){
+            val inflater = LayoutInflater.from(parent.context)
+            val binding = ListItemCrimeBinding.inflate(inflater, parent, false)
+            return CrimeHolder(binding)
+        }
+        else{
+            val inflater = LayoutInflater.from(parent.context)
+            val binding = ListItemPoliceCrimeBinding.inflate(inflater, parent, false)
+            return PoliceCrimeHolder(binding)
+        }
     }
-    override fun onBindViewHolder(holder: CrimeHolder, position: Int) {
+
+    // Bind data to the view holder (item of the list)
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val crime = crimes[position]
         /*holder.apply {
             binding.crimeTitle.text = crime.title
             binding.crimeDate.text = crime.date.toString()
         }*/
 
-        holder.bind(crime)
+        return when (crimes[position].requiresPolice){
+            false -> (holder as CrimeHolder).bind(crimes[position])
+            true -> (holder as PoliceCrimeHolder).bind(crimes[position])
+        }
     }
+
     override fun getItemCount() = crimes.size
+
+    override fun getItemViewType(position: Int): Int {
+        return if (crimes[position].requiresPolice) 1 else 0
+    }
 }

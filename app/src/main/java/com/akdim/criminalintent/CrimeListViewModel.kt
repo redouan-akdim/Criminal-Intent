@@ -13,7 +13,7 @@ class CrimeListViewModel : ViewModel() {
                 title ="Crime #$i",
                 date = Date(),
                 isSolved = i % 2 == 0,
-                requiresPolice = i % 5 == 0
+                requiresPolice = i % 5 == 0 && i%2!=0
             )
             crimes += crime
         }

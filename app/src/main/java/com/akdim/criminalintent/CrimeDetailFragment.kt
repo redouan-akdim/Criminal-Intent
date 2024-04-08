@@ -48,7 +48,7 @@ class CrimeDetailFragment : Fragment(){
                 crime = crime.copy(title = text.toString())
             }
 
-            // Listener for date button
+            // Date button
             crimeDate.apply {
                 text = crime.date.toString()
                 isEnabled = false

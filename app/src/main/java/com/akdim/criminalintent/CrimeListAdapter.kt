@@ -8,21 +8,23 @@ import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.akdim.criminalintent.databinding.ListItemCrimeBinding
 import com.akdim.criminalintent.databinding.ListItemPoliceCrimeBinding
+import java.util.UUID
 
 class CrimeHolder(
     private val binding: ListItemCrimeBinding
 ) : RecyclerView.ViewHolder(binding.root) {
-    fun bind(crime: Crime) {
+    fun bind(crime: Crime, onCrimeClicked:(crimeId: UUID) -> Unit) {
         binding.crimeTitle.text = crime.title
         //binding.crimeDate.text = crime.date.toString()
         binding.crimeDate.text = DateFormat.format("MMMM dd, yyyy", crime.date).toString()      // Convert timestamp to conventional date
 
         binding.root.setOnClickListener {
-            Toast.makeText(
+          /*  Toast.makeText(
                 binding.root.context,
                 "${crime.title} clicked!",
                 Toast.LENGTH_SHORT
-            ).show()
+            ).show()*/
+            onCrimeClicked(crime.id)
         }
 
         binding.crimeSolved.visibility = if (crime.isSolved) View.VISIBLE else View.GONE
@@ -49,7 +51,7 @@ class PoliceCrimeHolder(
 }
 
 class CrimeListAdapter(
-    private val crimes: List<Crime>
+    private val crimes: List<Crime>, private val onCrimeClicked: (crimeId: UUID) -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun onCreateViewHolder(
@@ -78,7 +80,7 @@ class CrimeListAdapter(
         }*/
 
         return when (crimes[position].requiresPolice){
-            false -> (holder as CrimeHolder).bind(crimes[position])
+            false -> (holder as CrimeHolder).bind(crimes[position], onCrimeClicked)
             true -> (holder as PoliceCrimeHolder).bind(crimes[position])
         }
     }
